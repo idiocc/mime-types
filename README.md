@@ -1,8 +1,10 @@
 # @goa/mime-types
 
-[![npm version](https://badge.fury.io/js/@goa/mime-types.svg)](https://npmjs.org/package/@goa/mime-types)
+[![npm version](https://badge.fury.io/js/%40goa%2Fmime-types.svg)](https://npmjs.org/package/@goa/mime-types)
 
-`@goa/mime-types` is [Fork] The ultimate javascript content-type utility.
+`@goa/mime-types` is the [Fork](https://github.com/jshttp/mime-types) of The Ultimate Javascript Content-Type utility Written In ES6 And Optimised With JavaScript Compiler. Comes bundled with [`mime-db`](https://github.com/jshttp/mime-db).
+
+The original module has been updated to be used in [`@goa/koa`](https://artdecocode.com/goa/): _Koa_ web server compiled with _Google Closure Compiler_ using [**Depack**](https://artdecocode.com/depack/) into a single file library (0 dependencies).
 
 ```sh
 yarn add @goa/mime-types
@@ -12,8 +14,11 @@ yarn add @goa/mime-types
 
 - [Table Of Contents](#table-of-contents)
 - [API](#api)
-- [`mimeTypes(arg1: string, arg2?: boolean)`](#mynewpackagearg1-stringarg2-boolean-void)
-  * [`_@goa/mime-types.Config`](#type-_@goa/mime-typesconfig)
+- [`lookup(path: string): string`](#lookuppath-string-string)
+- [`contentType(type: string): string`](#contenttypetype-string-string)
+- [`extension(type: string): string`](#extensiontype-string-string)
+- [`charset(type: string): string`](#charsettype-string-string)
+- [`types`](#types)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -23,43 +28,83 @@ yarn add @goa/mime-types
 The package is available by importing its default function:
 
 ```js
-import mimeTypes from '@goa/mime-types'
+import { lookup, contentType, extension, charset, types } from '@goa/mime-types'
 ```
+
+All functions return `false` if input is invalid or not found.
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/1.svg?sanitize=true"></a></p>
 
-## `mimeTypes(`<br/>&nbsp;&nbsp;`arg1: string,`<br/>&nbsp;&nbsp;`arg2?: boolean,`<br/>`): void`
+## `lookup(`<br/>&nbsp;&nbsp;`path: string,`<br/>`): string`
 
-Call this function to get the result you want.
+Lookup the content-type associated with a file.
 
-__<a name="type-_@goa/mime-typesconfig">`_@goa/mime-types.Config`</a>__: Options for the program.
-
-|   Name    |       Type       |    Description    | Default |
-| --------- | ---------------- | ----------------- | ------- |
-| shouldRun | <em>boolean</em> | A boolean option. | `true`  |
-| __text*__ | <em>string</em>  | A text to return. | -       |
-
-```js
-/* alanode example/ */
-import mimeTypes from '@goa/mime-types'
-
-(async () => {
-  const res = await mimeTypes({
-    text: 'example',
-  })
-  console.log(res)
-})()
-```
-```
-example
-```
+%EXAMPLE: example/lookup, ../src => @goa/mime-types%
+%FORK example/lookup%
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
+## `contentType(`<br/>&nbsp;&nbsp;`type: string,`<br/>`): string`
+
+Create a full content-type header given a content-type or extension. When given an extension, `mime.lookup` is used to get the matching content-type, otherwise the given content-type is used. Then if the content-type does not already have a `charset` parameter, `mime.charset` is used to get the default charset and add to the returned content-type.
+
+%EXAMPLE: example/content-type, ../src => @goa/mime-types%
+%FORK example/content-type%
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
+
+## `extension(`<br/>&nbsp;&nbsp;`type: string,`<br/>`): string`
+
+Get the default extension for a content-type.
+
+%EXAMPLE: example/extension, ../src => @goa/mime-types%
+%FORK example/extension%
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
+
+## `charset(`<br/>&nbsp;&nbsp;`type: string,`<br/>`): string`
+
+Lookup the implied default charset of a content-type.
+
+%EXAMPLE: example/charset, ../src => @goa/mime-types%
+%FORK example/charset%
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
+
+## `types`
+
+A map of content-types by extension.
+
+%EXAMPLE: example/types, ../src => @goa/mime-types%
+%FORK example/types%
+
+<p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
+
 ## Copyright
 
-(c) [Idio][1] 2019
+Original Work by [Jonathan Ong, Douglas Christopher Wilson](https://github.com/jshttp/mime-types).
 
-[1]: https://idio.cc
+<table>
+  <tr>
+    <th>
+      <a href="https://artd.eco">
+        <img src="https://raw.githubusercontent.com/wrote/wrote/master/images/artdeco.png" alt="Art Deco" />
+      </a>
+    </th>
+    <th>© <a href="https://artd.eco">Art Deco</a> for <a href="https://idio.cc">Idio</a> 2019</th>
+    <th>
+      <a href="https://idio.cc">
+        <img src="https://avatars3.githubusercontent.com/u/40834161?s=100" width="100" alt="Idio" />
+      </a>
+    </th>
+    <th>
+      <a href="https://www.technation.sucks" title="Tech Nation Visa">
+        <img src="https://raw.githubusercontent.com/artdecoweb/www.technation.sucks/master/anim.gif"
+          alt="Tech Nation Visa" />
+      </a>
+    </th>
+    <th><a href="https://www.technation.sucks">Tech Nation Visa Sucks</a></th>
+  </tr>
+</table>
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/-1.svg?sanitize=true"></a></p>

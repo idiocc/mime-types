@@ -4,8 +4,8 @@
 
 ## Copyright
 
-(c) [Idio][1] 2019
+Original Work by [Jonathan Ong, Douglas Christopher Wilson](https://github.com/jshttp/mime-types).
 
-[1]: https://idio.cc
+<idio-footer />
 
 %~ -1%
