@@ -1,31 +1,140 @@
-import { debuglog } from 'util'
+import { extname } from 'path'
+import db from './mime-db'
 
-const LOG = debuglog('@goa/mime-types')
+const EXTRACT_TYPE_REGEXP = /^\s*([^;\s]*)(?:;|\s|$)/
+const TEXT_TYPE_REGEXP = /^text\//i
+
+export const charsets = { 'lookup': charset }
+
+export const extensions = Object.create(null)
+export const types = Object.create(null)
+
+// Populate the extensions/types maps
+populateMaps(extensions, types)
 
 /**
- * [Fork] The ultimate javascript content-type utility.
- * @param {_@goa/mime-types.Config} [config] Options for the program.
- * @param {boolean} [config.shouldRun=true] A boolean option. Default `true`.
- * @param {string} config.text A text to return.
+ * Get the default charset for a MIME type.
+ * @param {string} type
+ * @return {boolean|string}
  */
-export default async function mimeTypes(config = {}) {
-  const {
-    shouldRun = true,
-    text,
-  } = config
-  if (!shouldRun) return
-  LOG('@goa/mime-types called with %s', text)
-  return text
+export function charset(type) {
+  if (!type || typeof type != 'string') return false
+
+  // TODO: use media-typer
+  const match = EXTRACT_TYPE_REGEXP.exec(type)
+  const mime = match && db[match[1].toLowerCase()]
+
+  if (mime && mime['charset']) return mime['charset']
+
+  // default text/* to utf-8
+  if (match && TEXT_TYPE_REGEXP.test(match[1])) return 'UTF-8'
+
+  return false
 }
 
-/* documentary types/index.xml */
 /**
- * @suppress {nonStandardJsDocs}
- * @typedef {_@goa/mime-types.Config} Config Options for the program.
+ * Create a full Content-Type header given a MIME type or extension.
+ * @param {string} str
+ * @return {boolean|string}
  */
+export function contentType(str) {
+  // TODO: should this even be in this module?
+  if (!str || typeof str != 'string') return false
+
+  let mime = str.indexOf('/') == -1
+    ? lookup(str)
+    : str
+
+  if (!mime) return false
+
+  let m = /** @type {string} */ (mime)
+  // TODO: use content-type or other module
+  if (!m.includes('charset')) {
+    const c = charset(m)
+    if (c) m += '; charset=' + c.toLowerCase()
+  }
+
+  return m
+}
+
 /**
- * @suppress {nonStandardJsDocs}
- * @typedef {Object} _@goa/mime-types.Config Options for the program.
- * @prop {boolean} [shouldRun=true] A boolean option. Default `true`.
- * @prop {string} text A text to return.
+ * Get the default extension for a MIME type.
+ * @param {string} type
+ * @return {boolean|string}
+ */
+export function extension(type) {
+  if (!type || typeof type != 'string') return false
+
+  // TODO: use media-typer
+  const match = EXTRACT_TYPE_REGEXP.exec(type)
+
+  // get extensions
+  const exts = match && extensions[match[1].toLowerCase()]
+
+  if (!exts || !exts.length) return false
+
+  return exts[0]
+}
+
+/**
+ * Lookup the MIME type for a file path/extension.
+ * @param {string} path
+ * @return {boolean|string}
+ */
+export function lookup(path) {
+  if (!path || typeof path != 'string') return false
+
+  // get the extension ("ext" or ".ext" or full path)
+  let e = extname('x.' + path)
+    .toLowerCase()
+    .substr(1)
+
+  if (!e) return false
+
+  return types[e] || false
+}
+
+/**
+ * Populate the extensions and types maps.
+ * @private
+ */
+function populateMaps(es, ts) {
+  // source preference (least -> most)
+  const preference = ['nginx', 'apache', undefined, 'iana']
+
+  Object.keys(db).forEach((type) => {
+    const mime = db[type]
+    const exts = mime['extensions']
+
+    if (!exts || !exts.length) return
+
+    // mime -> extensions
+    es[type] = exts
+
+    // extension -> mime
+    for (let i = 0; i < exts.length; i++) {
+      const e = exts[i]
+
+      if (ts[e]) {
+        const from = preference.indexOf(db[ts[e]]['source'])
+        const to = preference.indexOf(mime['source'])
+
+        if (ts[e] != 'application/octet-stream' &&
+          (from > to || (from == to && ts[e].substr(0, 12) == 'application/'))) {
+          // skip the remapping
+          continue
+        }
+      }
+
+      // set the extension -> mime
+      ts[e] = type
+    }
+  })
+}
+
+/**
+ * @license MIT
+ * Copyright (c) 2014 Jonathan Ong <me@jongleberry.com>
+ * Copyright (c) 2015 Douglas Christopher Wilson <doug@somethingdoug.com>
+ * https://npmjs.com/package/mime-types
  */

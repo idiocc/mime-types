@@ -1,14 +1,15 @@
 {
   "name": "@goa/mime-types",
   "version": "0.0.0-pre",
-  "description": "[Fork] The ultimate javascript content-type utility.",
-  "main": "build/index.js",
+  "description": "[Fork] The Ultimate Javascript Content-Type utility Written In ES6 And Optimised With JavaScript Compiler.",
+  "main": "depack/index.js",
   "module": "src/index.js",
   "scripts": {
     "t": "zoroaster -a",
     "test": "yarn t test/spec test/mask",
     "spec": "yarn t test/spec",
     "mask": "yarn t test/mask",
+    "depack": "depack-dev src/depack -o depack/depack.js -l -a -p -S",
     "test-build": "ALAMODE_ENV=test-build yarn test",
     "lint": "eslint .",
     "doc": "NODE_DEBUG=doc doc -o README.md",
@@ -20,11 +21,9 @@
     "e": "alanode"
   },
   "files": [
-    "build",
-    "src",
-    "types/externs.js"
+    "depack",
+    "src"
   ],
-  "externs": "types/externs.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/idiocc/mime-types.git"
