@@ -69,4 +69,11 @@ A map of content-types by extension.
 %EXAMPLE: example/types, ../src => @goa/mime-types%
 %FORK example/types%
 
+## `extensions`
+
+A map of extensions by content-type.
+
+%EXAMPLE: example/extensions, ../src => @goa/mime-types%
+%FORK example/extensions%
+
 %~%

@@ -1,5 +1,6 @@
 import { strictEqual } from 'assert'
-import { charset, contentType, lookup, extension } from '../../src'
+import { deepEqual } from '@zoroaster/assert'
+import { types, charset, contentType, lookup, extension, extensions } from '../../src'
 
 export const Charset = {
   'returns "UTF-8" for "application/json"'() {
@@ -175,5 +176,19 @@ export const LookupPath = {
     'returns mime type when there is extension, but no path'() {
       strictEqual(lookup('.config.json'), 'application/json')
     },
+  },
+}
+
+export const Types = {
+  'is an object'() {
+    strictEqual(typeof types, 'object')
+  },
+}
+export const Extensions = {
+  'is an object'() {
+    strictEqual(typeof extensions, 'object')
+  },
+  'returns an array'() {
+    deepEqual(extensions['application/mp4'], ['mp4s','m4p'])
   },
 }

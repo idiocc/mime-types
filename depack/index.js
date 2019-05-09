@@ -41,3 +41,13 @@ module.exports.charset = charset
 module.exports.contentType = contentType
 module.exports.lookup = lookup
 module.exports.charsets = _MediaTypes.charsets
+/**
+ * A map of content-types by extension.
+ * @type {!Object<string, string>}
+ */
+module.exports.types = _MediaTypes.types
+/**
+ * A map of extensions by content-type.
+ * @type {!Object<string, !Array<string>>}
+ */
+module.exports.extensions = _MediaTypes.extensions

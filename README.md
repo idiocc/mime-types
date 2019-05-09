@@ -19,6 +19,7 @@ yarn add @goa/mime-types
 - [`extension(type: string): string`](#extensiontype-string-string)
 - [`charset(type: string): string`](#charsettype-string-string)
 - [`types`](#types)
+- [`extensions`](#extensions)
 - [Copyright](#copyright)
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/0.svg?sanitize=true"></a></p>
@@ -39,8 +40,25 @@ All functions return `false` if input is invalid or not found.
 
 Lookup the content-type associated with a file.
 
-%EXAMPLE: example/lookup, ../src => @goa/mime-types%
-%FORK example/lookup%
+```js
+import { lookup } from '@goa/mime-types'
+
+console.log(lookup('json'))
+console.log(lookup('.md'))
+console.log(lookup('file.html'))
+console.log(lookup('folder/file.js'))
+console.log(lookup('folder/.htaccess'))
+
+console.log(lookup('cats'))
+```
+```
+application/json
+text/markdown
+text/html
+application/javascript
+false
+false
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/2.svg?sanitize=true"></a></p>
 
@@ -48,8 +66,25 @@ Lookup the content-type associated with a file.
 
 Create a full content-type header given a content-type or extension. When given an extension, `mime.lookup` is used to get the matching content-type, otherwise the given content-type is used. Then if the content-type does not already have a `charset` parameter, `mime.charset` is used to get the default charset and add to the returned content-type.
 
-%EXAMPLE: example/content-type, ../src => @goa/mime-types%
-%FORK example/content-type%
+```js
+import { contentType } from '@goa/mime-types'
+import { extname } from 'path'
+
+console.log(contentType('markdown'))
+console.log(contentType('file.json'))
+console.log(contentType('text/html'))
+console.log(contentType('text/html; charset=iso-8859-1'))
+
+// from a full path
+console.log(contentType(extname('/path/to/file.json')))
+```
+```
+text/markdown; charset=utf-8
+application/json; charset=utf-8
+text/html; charset=utf-8
+text/html; charset=iso-8859-1
+application/json; charset=utf-8
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/3.svg?sanitize=true"></a></p>
 
@@ -57,8 +92,14 @@ Create a full content-type header given a content-type or extension. When given 
 
 Get the default extension for a content-type.
 
-%EXAMPLE: example/extension, ../src => @goa/mime-types%
-%FORK example/extension%
+```js
+import { extension } from '@goa/mime-types'
+
+console.log(extension('application/octet-stream'))
+```
+```
+bin
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/4.svg?sanitize=true"></a></p>
 
@@ -66,8 +107,14 @@ Get the default extension for a content-type.
 
 Lookup the implied default charset of a content-type.
 
-%EXAMPLE: example/charset, ../src => @goa/mime-types%
-%FORK example/charset%
+```js
+import { charset } from '@goa/mime-types'
+
+console.log(charset('text/markdown'))
+```
+```
+UTF-8
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/5.svg?sanitize=true"></a></p>
 
@@ -75,8 +122,27 @@ Lookup the implied default charset of a content-type.
 
 A map of content-types by extension.
 
-%EXAMPLE: example/types, ../src => @goa/mime-types%
-%FORK example/types%
+```js
+import { types } from '@goa/mime-types'
+
+console.log(types['json'])
+```
+```
+application/json
+```
+
+## `extensions`
+
+A map of extensions by content-type.
+
+```js
+import { extensions } from '@goa/mime-types'
+
+console.log(extensions['application/mp4'])
+```
+```
+[ 'mp4s', 'm4p' ]
+```
 
 <p align="center"><a href="#table-of-contents"><img src=".documentary/section-breaks/6.svg?sanitize=true"></a></p>
 

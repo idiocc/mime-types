@@ -6,4 +6,6 @@ DEPACK_EXPORT = {
   'charsets': MimeTypes.charsets,
   'contentType': MimeTypes.contentType,
   'lookup': MimeTypes.lookup,
+  'types': MimeTypes.types,
+  'extensions': MimeTypes.extensions,
 }
