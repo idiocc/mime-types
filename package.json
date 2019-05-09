@@ -1,6 +1,6 @@
 {
   "name": "@goa/mime-types",
-  "version": "0.0.0-pre",
+  "version": "1.0.0",
   "description": "[Fork] The Ultimate Javascript Content-Type utility Written In ES6 And Optimised With JavaScript Compiler.",
   "main": "depack/index.js",
   "module": "src/index.js",
