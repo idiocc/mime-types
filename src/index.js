@@ -1,5 +1,5 @@
+const db = require(/* ok depack*/ 'mime-db')
 import { extname } from 'path'
-import db from './mime-db'
 
 const EXTRACT_TYPE_REGEXP = /^\s*([^;\s]*)(?:;|\s|$)/
 const TEXT_TYPE_REGEXP = /^text\//i
