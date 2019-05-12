@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/%40goa%2Fmime-types.svg)](https://npmjs.org/package/@goa/mime-types)
 
-`@goa/mime-types` is the [Fork](https://github.com/jshttp/mime-types) of The Ultimate Javascript Content-Type utility Written In ES6 And Optimised With JavaScript Compiler. Comes bundled with [`mime-db`](https://github.com/jshttp/mime-db).
+`@goa/mime-types` is the [Fork](https://github.com/jshttp/mime-types) of The Ultimate Javascript Content-Type utility Written In ES6 And Optimised With JavaScript Compiler. Depends on the [`mime-db`](https://github.com/jshttp/mime-db) which was not bundled to allow direct upgrades of the database.
 
 The original module has been updated to be used in [`@goa/koa`](https://artdecocode.com/goa/): _Koa_ web server compiled with _Google Closure Compiler_ using [**Depack**](https://artdecocode.com/depack/) into a single file library (0 dependencies).
 
@@ -149,6 +149,8 @@ console.log(extensions['application/mp4'])
 ## Copyright
 
 Original Work by [Jonathan Ong, Douglas Christopher Wilson](https://github.com/jshttp/mime-types).
+
+---
 
 <table>
   <tr>
